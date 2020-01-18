@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <form action="/login" method="post" class="col-md-4">
+        <label>Email</label><br/>
+        <input id="username" type="email" name="email" placeholder="Email" style="width: 60%;"/>
+        <br/>
+        <br/>
+
+        <label>Password</label><br/>
+        <input id="password" type="password" name="password" placeholder="Password" style="width: 60%;"/>
+        <br/>
+        <br/>
+
+        <button id="submit" type="submit">Signin</button>
+    </form>
+
+{% endblock %}
+

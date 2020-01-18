@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    {% if user %}
+        <div class="col-md-8">
+    {% else %}
+        <div class="col-md-12">
+    {% endif %}
+        {% for pizza in menu %}
+        <div class="col-md-4">
+            <img src="{{ pizza.image_url }}" class="img-thumbnail" width="100%">
+            <span style="font-size: 1.4em">{{ pizza.pizza_name }}</span><br/>
+            <span>Price: {{ pizza.price }}</span><br/>
+            <button id="{{ pizza.id }}" onclick="order(this.id)">
+                Order
+            </button>
+            <br/>
+        </div>
+        {% endfor %}
+
+    </div>
+    {% if user %}
+    <div class="col-md-4" style="border: 2px solid darkgray;padding: 4px;">
+        <div id="messages" style="height: 500px; overflow-x: scroll"></div>
+        <div style="width: 100%;">
+            <input type="text" id="userMsg" style="width: 78%;"/>
+            <button id="sendBtn" style="width: 20%">Send</button>
+        </div>
+
+        </body>
+    </div>
+    {% endif %}
+
+<script type="text/javascript">
+
+    function order(id) {
+        check_login()
+        {% if user %}
+            var user_id = "{{ user.public_id }}";
+        {% else %}
+        window.location.pathname = "/signin"
+        {% endif %}
+        fetch("/order", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        id, user_id
+                    }),
+                })
+                .then(res => console.log(res.status));
+
+    }
+</script>
+    {% endblock %}
+

@@ -1,0 +1,73 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+    {% if title %}{{ title }}{% else %}Yo Yo Pizza{% endif %}
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <div class="navbar-brand">YYP</div>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div class="nav navbar-header navbar-right">
+                    {% if user %}
+                        <a class="navbar-brand" href="{{ url_for('logout') }}">Logout {{ user.name }}?</a>
+                    {% else %}
+                        <a class="navbar-brand" href="{{ url_for('signin') }}">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+            crossorigin="anonymous"></script>
+
+
+{% if user%}
+    <script type="text/javascript">
+        function check_login(){
+            if(document.cookie.startsWith('x-access-token'))
+                    { console.log('HEllooo');}
+                else
+                    {window.location.pathname='/index';}
+        }
+
+
+            $(document).ready(function () {
+                var socket = io.connect('http://' + document.domain + ':' + location.port);
+                var user_id = '{{ user.public_id }}'
+
+                socket.on("connect", function () {
+
+                    socket.emit('join', user_id, user_id);
+                    // socket.send('Connected!');
+                });
+
+                console.log(user_id);
+                socket.on("message", function (msg, user_id) {
+                    $("#messages").append("<p>" + msg + "</p>");
+                });
+
+                $("#sendBtn").on('click', function () {
+                    check_login();
+                    socket.send($("#userMsg").val(), user_id);
+                    $("#userMsg").val("");
+                })
+            });
+        </script>
+{% endif %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
+                integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+{% endblock %}
