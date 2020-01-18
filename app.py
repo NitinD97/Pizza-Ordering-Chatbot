@@ -1,4 +1,5 @@
 import datetime
+import json
 import time
 from functools import wraps
 from threading import Thread
@@ -86,6 +87,11 @@ def login():
     return make_response('Could not verify!', 401, {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
 
+@app.route('/register', methods=['GET'])
+def register_user():
+    return render_template('register.html')
+
+
 @app.route('/create_user', methods=['POST'])
 def register():
     data = request.form
@@ -107,10 +113,10 @@ def register():
         user.set_password(data['password'])
         db.session.add(user)
         db.session.commit()
-        return functions.return_success_message('Registered Successfully.')
+        return redirect(url_for(index))
     except Exception as e:
         print('[ERROR]: ', e)
-        return functions.return_error_message('Unable to register.', 400)
+        return redirect(url_for('register'))
 
 
 @app.route('/order', methods=['POST'])

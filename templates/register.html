@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <form action="/create_user" method="post" class="col-md-4">
+        <label>Email</label><br/>
+        <input id="email" type="email" name="email" placeholder="Email" style="width: 60%;"/>
+        <br/>
+        <br/>
+        <label>Name</label><br/>
+        <input id="name" type="text" name="name" placeholder="Name" style="width: 60%;"/>
+        <br/>
+        <br/>
+        <label>Username</label><br/>
+        <input id="username" type="text" name="username" placeholder="Username" style="width: 60%;"/>
+        <br/>
+        <br/>
+        <label>Password</label><br/>
+        <input id="password" type="password" name="password" placeholder="Password" style="width: 60%;"/>
+        <br/>
+        <br/>
+
+        <label>Confirm Password</label><br/>
+        <input id="confirmPassword" type="password" name="confirmPassword" placeholder="Password" style="width: 60%;"/>
+        <br/>
+        <br/>
+
+        <button id="submit" type="submit">Signin</button>
+    </form>
+
+{% endblock %}
+
