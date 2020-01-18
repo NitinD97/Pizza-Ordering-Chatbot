@@ -88,7 +88,7 @@ def login():
 
 @app.route('/create_user', methods=['POST'])
 def register():
-    data = request.get_json()
+    data = request.form
     email, error = data['email'].lower(), None
     if not data['password'] == data['confirmPassword']:
         error = 'Passwords must be same.'
