@@ -24,7 +24,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app,db)
 bootstrap = Bootstrap(app)
 import functions
-from models import User, Order
+from models import User, Order, Menu
 
 
 def token_required(f):
