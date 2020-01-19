@@ -170,6 +170,7 @@ def chat(msg):
         final = final + res + '<br/>'
     return final
 
+
 def order_pizza(pizza_id, user_id):
     pizza = functions.return_pizza_data(pizza_id)
     with app.test_request_context():
