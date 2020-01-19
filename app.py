@@ -80,11 +80,10 @@ def login():
             }
             , app.config['SECRET_KEY']
         ).decode('utf-8')
-        print(token)
         redr = redirect(url_for('index'))
         redr.set_cookie('x-access-token', token, expires=datetime.datetime.utcnow()+datetime.timedelta(minutes=5))
         return redr
-    return make_response('Could not verify!', 401, {'WWW-Authenticate': 'Basic realm="Login Required"'})
+    return redirect(url_for('index'))
 
 
 @app.route('/register', methods=['GET'])
