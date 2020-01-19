@@ -8,7 +8,7 @@ class User(db.Model):
     public_id = db.Column(db.String(50), unique=True, index=True)
     email = db.Column(db.String(70), unique=True)
     name = db.Column(db.String(50))
-    password = db.Column(db.String(80))
+    password = db.Column(db.String(200))
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
