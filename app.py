@@ -1,6 +1,8 @@
 import datetime
 import json
+import os
 import time
+import nltk
 from functools import wraps
 from threading import Thread
 
@@ -14,7 +16,6 @@ from flask_sqlalchemy import SQLAlchemy
 import chatbot
 from config import Config
 
-
 BOT_NAME = 'YoYo Bot'
 
 app = Flask(__name__)
@@ -25,6 +26,8 @@ migrate = Migrate(app,db)
 bootstrap = Bootstrap(app)
 import functions
 from models import User, Order
+nltk_dir = os.path.join(os.getcwd(), 'nltkData')
+nltk.data.path = [nltk_dir]
 
 
 def token_required(f):
@@ -68,7 +71,6 @@ def logout():
 @app.route('/login', methods=['POST'])
 def login():
     data = request.form
-    print(data)
     if not data:
         return make_response('Could not verify!', 401, {'WWW-Authenticate': 'Basic realm="Login Required"'})
     email, password = data.get('email', None).lower(), data.get('password', None)
@@ -81,6 +83,7 @@ def login():
             }
             , app.config['SECRET_KEY']
         ).decode('utf-8')
+        print(token)
         redr = redirect(url_for('index'))
         redr.set_cookie('x-access-token', token, expires=datetime.datetime.utcnow()+datetime.timedelta(minutes=5))
         return redr
@@ -94,9 +97,7 @@ def register_user():
 
 @app.route('/create_user', methods=['POST'])
 def register():
-
     data = request.form
-    print(data)
     email, error = data['email'].lower(), None
     if not data['password'] == data['confirmPassword']:
         error = 'Passwords must be same.'
@@ -105,7 +106,7 @@ def register():
     elif not functions.is_email_unique(email):
         error = 'Email is already registered.'
     if error:
-        return render_template('register.html')
+        return functions.return_error_message(error, 401)
     user = User(
         public_id=data['username'],
         name=data['name'],
@@ -118,12 +119,11 @@ def register():
         return redirect(url_for('index'))
     except Exception as e:
         print('[ERROR]: ', e)
-        return redirect(url_for('register'))
+        return render_template('register.html')
 
 
 @app.route('/order', methods=['POST'])
 def place_order():
-    import json
     data = json.loads(request.get_data().decode('utf-8'))
     handle_message('Hi there, I see you ordered a pizza, Ill keep you updated on the status.', user_id=data['user_id'], bot=True)
     Thread(target=order_pizza,
@@ -170,7 +170,6 @@ def chat(msg):
         final = final + res + '<br/>'
     return final
 
-
 def order_pizza(pizza_id, user_id):
     pizza = functions.return_pizza_data(pizza_id)
     with app.test_request_context():
@@ -196,4 +195,4 @@ def order_pizza(pizza_id, user_id):
 
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app=app, host='0.0.0.0')
