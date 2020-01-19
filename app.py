@@ -68,6 +68,7 @@ def logout():
 @app.route('/login', methods=['POST'])
 def login():
     data = request.form
+    print(data)
     if not data:
         return make_response('Could not verify!', 401, {'WWW-Authenticate': 'Basic realm="Login Required"'})
     email, password = data.get('email', None).lower(), data.get('password', None)
@@ -93,7 +94,9 @@ def register_user():
 
 @app.route('/create_user', methods=['POST'])
 def register():
+
     data = request.form
+    print(data)
     email, error = data['email'].lower(), None
     if not data['password'] == data['confirmPassword']:
         error = 'Passwords must be same.'
