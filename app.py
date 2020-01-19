@@ -24,7 +24,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app,db)
 bootstrap = Bootstrap(app)
 import functions
-from models import User, Order, Menu
+from models import User, Order
 
 
 def token_required(f):
@@ -50,19 +50,6 @@ def token_required(f):
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-    pizza1 = Menu(pizza_name="GoldenCorn",
-                  image_url="https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/story/red-roofs-are-haunting-pizza-huts-sales.jpg?itok=z0D4czud",
-                  price=300)
-    pizza2 = Menu(pizza_name="ExtraVaganza",
-                  image_url="https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/story/red-roofs-are-haunting-pizza-huts-sales.jpg?itok=z0D4czud",
-                  price=392)
-    pizza3 = Menu(pizza_name="FreshVeggie",
-                  image_url="https://www.qsrmagazine.com/sites/default/files/styles/story_page/public/story/red-roofs-are-haunting-pizza-huts-sales.jpg?itok=z0D4czud",
-                  price=201)
-    db.session.add(pizza1)
-    db.session.add(pizza2)
-    db.session.add(pizza3)
-    db.session.commit()
     token = request.cookies.get('x-access-token', None)
     menu = functions.return_pizza_menu()
     if token:
