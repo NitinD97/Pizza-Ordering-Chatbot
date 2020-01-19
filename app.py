@@ -103,7 +103,7 @@ def register():
     elif not functions.is_email_unique(email):
         error = 'Email is already registered.'
     if error:
-        return functions.return_error_message(error, 401)
+        return render_template('register.html')
     user = User(
         public_id=data['username'],
         name=data['name'],
@@ -113,7 +113,7 @@ def register():
         user.set_password(data['password'])
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for(index))
+        return redirect(url_for('index'))
     except Exception as e:
         print('[ERROR]: ', e)
         return redirect(url_for('register'))
