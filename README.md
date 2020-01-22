@@ -1,6 +1,4 @@
-# Pizza-Ordering-Chatbot
-
-## Project URL: http://tiny.cc/dhxwiz
+# Pizza-Ordering-Chatbot (http://tiny.cc/dhxwiz)
 Login credentials:\
   email - nitin@mail.com \
   password - 111
