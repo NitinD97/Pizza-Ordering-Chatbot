@@ -15,11 +15,11 @@ Login credentials:\
         - User: Contains user's data.\
         - Order: Contains details about user's orders.\
         - Chat: Contains the chats between the user and bot.\
-  e. The tables are implemented using flask-sqlalchemy, front-end is done using Jinja2 template. flask-Migrations help in implementing the changes made in the models into the DB through python code and shell commands. Finally, deployed the app on AWS server using docker.\
+  e. The tables are implemented using flask-sqlalchemy, front-end is done using Jinja2 template. flask-Migrations help in implementing the changes made in the models into the DB through python code and shell commands. Finally, deployed the app on AWS server using docker.
 ### Yet to be done:
   Some implementations are still pending, some of them are:\
     a. The order status function in the chat response is hard-coded to 'Out for delivery' response.\
     b. More chats need to be implemented, negative responses are not implemented fully.\
     c. Old chat history is not being loaded, need to load chat back from DB.\
     d. Some redirects need to be configured properly.\
-    e. Some deployment steps are missing as of now.\
+    e. Some deployment steps are missing as of now.
